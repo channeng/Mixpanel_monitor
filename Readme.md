@@ -1,8 +1,11 @@
 # Mixpanel Monitor
 
-Monitor and perform analysis on all events within Mixpanel. Currently, there is only 1 module in this package.
+Monitor and perform analysis on all events within Mixpanel. 
 
-**Events_analysis** - For each event in Mixpanel Segmentation, provides the following data:
+## Modules
+Currently, there is only 1 module in this package.
+### **Events_analysis**
+For each event in Mixpanel Segmentation, provides the following data:
 * Daily Avg (Last 7 days)
 * Daily Avg (Prior 7 days)
 * Daily Avg (Last 30 days)
