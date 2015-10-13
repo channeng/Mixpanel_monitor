@@ -6,8 +6,8 @@ Monitor and perform analysis on all events within Mixpanel. Currently, there is 
 * Daily Avg (Last 7 days)
 * Daily Avg (Prior 7 days)
 * Daily Avg (Last 30 days)
-# Regress_coeff (30d) - Positive = upward trend, Negative = downward trend
-Output: trend_analysis.csv
+* Regress_coeff (30d) - Positive = upward trend, Negative = downward trend
+* **Output**: trend_analysis.csv
 
 ## Install
 To run the module, install all packages given in requirements.txt
