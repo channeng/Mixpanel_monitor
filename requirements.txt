@@ -1,0 +1,4 @@
+pandas==0.17.0
+python-dateutil==2.4.2
+scikits.statsmodels==0.3.1
+scipy==0.16.0
