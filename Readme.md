@@ -13,7 +13,7 @@ For each event in Mixpanel Segmentation, provides the following data:
 * Daily Avg (Last 30 days)
 * Regress_coeff (30d) - Positive = upward trend, Negative = downward trend
 
-**Output**: trend_analysis.csv
+**Output**: trend_analysis.csv  
 **Usage**: Script can be triggered to generate report on a weekly basis.
 
 ## Install
