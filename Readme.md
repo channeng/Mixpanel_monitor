@@ -6,7 +6,7 @@ Monitor and perform analysis on all events within Mixpanel.
 Currently, there is only 1 module in this package.
 ### **Events_analysis**
 Provides a broad overview of the performance of each Mixpanel event.
-The script generates a 30-day trend analysis report on all Mixpanel events.
+The script generates a 30-day trend analysis report on all Mixpanel events.  
 For each event in Mixpanel Segmentation, provides the following data:
 * Daily Avg (Last 7 days)
 * Daily Avg (Prior 7 days)
