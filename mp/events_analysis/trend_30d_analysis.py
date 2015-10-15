@@ -2,11 +2,13 @@
 from ..mixpanel_wrapper import Mixpanel
 from ..dropbox_wrapper import Dropbox
 import datetime
+<<<<<<< HEAD
 from sys import stdout
+=======
+>>>>>>> 3544fc1d3b4cbfdbf33cdb7f9b2e940e5455cbfc
 import os
 import pandas as pd
 from pandas.stats.api import ols
-# import statsmodels.formula.api as sm 
 import dateutil.parser
 
 class Mixpanel_Events_monitor(object):
@@ -23,7 +25,11 @@ class Mixpanel_Events_monitor(object):
     all_events = self.get_all_events()
     from_date = datetime.date.today()-datetime.timedelta(30)
     to_date = datetime.date.today()-datetime.timedelta(1)
+<<<<<<< HEAD
     count_all_events = len(all_events)
+=======
+    print "Total: %-3s events found" %(len(all_events))
+>>>>>>> 3544fc1d3b4cbfdbf33cdb7f9b2e940e5455cbfc
     trend_data = {}
 #     i = 0
     for event in all_events:
@@ -46,9 +52,7 @@ class Mixpanel_Events_monitor(object):
   def trend_data_to_csv(self):
     trend_data = self.get_trend_data()
     import csv
-    # Create header line
     header_line = ["Date"] + trend_data.keys()
-    # Create unique keys.
     rows = list(set([date for event in trend_data.values() for date in event.keys()]))
     # Create rows
     table = [header_line]+[[unique_date]+[trend_data[event].get(unique_date, '-') for event in header_line[1:]] for unique_date in rows]
