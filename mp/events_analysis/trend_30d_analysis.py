@@ -1,6 +1,8 @@
+# Run script by going to root and run command: cd ~/Mixpanel_monitor && python -m mp.events_analysis.trend_30d_analysis
 from ..mixpanel_wrapper import Mixpanel
+from ..dropbox_wrapper import Dropbox
 import datetime
-# Run script by going to root and run command: python -m Mixpanel.Event_trends.list_all_events
+from sys import stdout
 import os
 import pandas as pd
 from pandas.stats.api import ols
@@ -21,9 +23,9 @@ class Mixpanel_Events_monitor(object):
     all_events = self.get_all_events()
     from_date = datetime.date.today()-datetime.timedelta(30)
     to_date = datetime.date.today()-datetime.timedelta(1)
-    # interval = (to_date - from_date).days
-    print "Total: %-3s events found" %(len(all_events))
+    count_all_events = len(all_events)
     trend_data = {}
+#     i = 0
     for event in all_events:
       event_data = self.api.request(['segmentation'], {
           'event' : event,
@@ -33,6 +35,11 @@ class Mixpanel_Events_monitor(object):
           'type' : "unique",
         })
       trend_data[event] = event_data['data']['values'][event]
+      # Print counter
+#       i += 1
+#       stdout.write("\r%d / %s events retrieved" %(i,count_all_events))
+#       stdout.flush()
+#     stdout.write("\n")
     return trend_data
 
   # CONVERT DATA TO CSV
@@ -64,7 +71,7 @@ class Mixpanel_Events_monitor(object):
     trend_dataframe.index.name = 'Date'
     return trend_dataframe
   
-  def trend_analysis_csv(self,trend_dataframe):
+  def trend_analysis_df(self,trend_dataframe):
     # Define date variables
     date_today = datetime.date.today()
     date_7d_ago = date_today - datetime.timedelta(7)
@@ -86,11 +93,16 @@ class Mixpanel_Events_monitor(object):
       s_reset_as_df = s_series.reset_index()
       s_coeff = ols(x=s_reset_as_df["index"] ,y=s_reset_as_df[0]).beta['x'] # Gets the regression coeff
       trend_series_30d_regress_coeff = trend_series_30d_regress_coeff.set_value(i,s_coeff)
-
     # Create Trend Analysis Dataframe
-    trend_df_means = pd.concat([trend_series_last7d_mean,trend_series_prior7d_mean,trend_series_last30d_mean,trend_series_30d_regress_coeff],axis=1)
+    trend_analysis_df = pd.concat([trend_series_last7d_mean,trend_series_prior7d_mean,trend_series_last30d_mean,trend_series_30d_regress_coeff],axis=1)
+    trend_analysis_df.index.name = "Events"
+    return trend_analysis_df
+    
+  def trend_analysis_csv(self,trend_dataframe):
     # Output to CSV
-    trend_df_means.to_csv("trend_analysis.csv")
+    trend_analysis_df = self.trend_analysis_df(trend_dataframe)
+    file_name = "Trend_analysis_"+str(datetime.date.today())+".csv"
+    trend_analysis_df.to_csv(file_name)
 
 if __name__ == '__main__':
   # 1) INITIALIZE MIXPANEL_EVENTS_MONITOR INSTANCE 
@@ -100,20 +112,28 @@ if __name__ == '__main__':
   
   # 2) CREATE TREND_DATAFRAME FOR ANALYSIS WITH PANDAS - 2 options to do so
   
-#   # OPTION (A)
+  # OPTION (A)
 #   # PART 1: Download TREND_DATA to root as csv file
 #   monitor.trend_data_to_csv()
 #   # PART 2: Create trend dataframe from csv file in root
 #   trend_dataframe = monitor.csv_to_pandas()
 
-  # OPTION (B)
-  # Create trend dataframe straight from Mixpanel API
+#   # OPTION (B)
+#   # Create trend dataframe straight from Mixpanel API
   trend_dataframe = monitor.data_to_pandas()
   
   # 3) GENERATE TREND_ANALYSIS AS CSV
   monitor.trend_analysis_csv(trend_dataframe)
   
-  
+  # 4) Automated file upload to dropbox
+  dropbox_token = os.environ["DROPBOX_TOKEN"]
+  file_name = "Trend_analysis_"+str(datetime.date.today())+".csv"
+  upload_path_in_dropbox = os.environ["UPLOAD_PATH"]+"MP_Events_Report/"
+    # Initialize dropbox instance, upload to dropbox, and delete original
+  DB = Dropbox(dropbox_token,file_name,upload_path_in_dropbox)
+  DB.upload_to_dropbox()
+  DB.delete_original()
+
 #   # OTHER FUNCTIONS
 #   # Print all events
 #   all_events = monitor.get_all_events()
