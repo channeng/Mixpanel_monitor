@@ -14,7 +14,7 @@ class Dropbox(object):
       response = client.put_file(self.path+self.file_name, f)
       folder_metadata = client.metadata(self.path)
       f, metadata = client.get_file_and_metadata(self.path+self.file_name)
-    print "Uploaded to Dropbox - File: %-35s  Uploaded at: %30s" %s(str(self.file_name),str(datetime.datetime.now()))
+    print "Uploaded to Dropbox - File: %-35s  Uploaded at: %30s" %(str(self.file_name),str(datetime.datetime.now()))
   
   def delete_original(self):
     try:
