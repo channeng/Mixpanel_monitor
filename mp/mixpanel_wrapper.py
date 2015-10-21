@@ -109,6 +109,6 @@ if __name__ == '__main__':
         'event' : ['pages'],
         'unit' : 'hour',
         'interval' : 24,
-        'type': 'general'
+        'type': 'unique'
     })
     print data

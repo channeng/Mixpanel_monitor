@@ -106,8 +106,8 @@ class Mixpanel_Events_monitor(object):
 
 if __name__ == '__main__':
   # 1) INITIALIZE MIXPANEL_EVENTS_MONITOR INSTANCE 
-  api_key = os.environ["MP_KEY"]
-  api_secret = os.environ["MP_SECRET"]
+  api_key = os.environ["MP_PRO_KEY"]
+  api_secret = os.environ["MP_PRO_SECRET"]
   monitor = Mixpanel_Events_monitor(api_key,api_secret)
   
   # 2) CREATE TREND_DATAFRAME FOR ANALYSIS WITH PANDAS - 2 options to do so
